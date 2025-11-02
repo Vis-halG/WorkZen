@@ -1,0 +1,253 @@
+/* ================================================= */
+/* 1. TOP HEADER/SEARCH BAR STYLING (Fixed at Top) */
+/* ================================================= */
+
+.search-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100; /* High Z-index */
+    padding: 0 16px 10px 16px;
+    border-radius: 0 0 10px 10px;
+    transition: max-height 0.4s ease-in-out, background-color 0.4s ease-in-out, border-radius 0.4s ease-in-out;
+    max-height: 60px;
+    overflow: hidden;
+}
+
+.search-container.expanded {
+    max-height: 100vh;
+    background-color: white;
+    border-radius: 0;
+}
+
+.top-bar-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-shrink: 0;
+    padding-top: 10px;
+    position: relative;
+    height: 40px; 
+}
+
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    flex-shrink: 0;
+    transition: background-color 0.4s ease;
+}
+
+.profile-circle-expandable {
+    position: absolute;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+    
+    transition:
+        height 0.02s ease-in-out,
+        border-radius 0.2s ease-out 0.2s,
+        opacity 0.2s ease-in-out,
+        visibility 0s linear 0.2s,
+        background-color 0.2s ease;
+}
+
+.profile-circle-expandable.is-hovered {
+    opacity: 1;
+    visibility: visible;
+    transition:
+        opacity 0.2s ease-in-out,
+        visibility 0s linear;
+}
+
+.search-container.expanded .profile-circle-expandable {
+    border-radius: 10px; 
+    /* Using a fixed value of 40px for top-bar content and 10px top/bottom padding */
+    height: calc(100vh - 0.5px - 10px - 10px); 
+    opacity: 1;
+    visibility: visible;
+    
+    transition:
+        border-radius 0.01s, 
+        height 0.4s ease-in-out 0.01s,
+        opacity 0.2s ease-in-out,
+        visibility 0s linear,
+        background-color 0.2s ease;
+}
+
+.search-box {
+    flex-grow: 1;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    margin-left: 10px;
+    box-sizing: border-box;
+}
+
+.search-input {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-size: 16px;
+    color: #000;
+    width: 100%;
+    font-family: system-ui, sans-serif;
+}
+
+.menu-icon {
+    width: 22px;
+    height: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.line {
+    width: 100%;
+    height: 2.5px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.menu-icon:hover .line {
+    background-color: #000;
+}
+
+.menu-icon.active .line:nth-child(1) {
+    transform: rotate(45deg) translateY(7px);
+}
+
+.menu-icon.active .line:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-icon.active .line:nth-child(3) {
+    transform: rotate(-45deg) translateY(-7px);
+}
+
+.nav-options {
+    margin-top: -7px;
+    margin-left: 50px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #e0e0e0;
+    list-style: none;
+    padding: 20px;
+    /* Height calculation based on top-bar elements */
+    height: calc(100vh - 45px - 10px - 10px - 20px - 7px);
+    transition: opacity 0.3s ease-in-out 0.2s, transform 0.3s ease-in-out 0.2s;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    overflow-y: auto;
+}
+
+.search-container.expanded .nav-options {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.nav-options li {
+    padding: 15px;
+    font-size: 17px;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+.nav-options li:first-child {
+    padding-top: 150px;
+}
+.nav-options li:last-child {
+    border-bottom: none;
+}
+
+.nav-options li:hover {
+    background-color: #e6e6e6;
+    padding-left: 5px;
+}
+
+/* ================================================= */
+/* 2. BOTTOM NAVIGATION BAR STYLING (Flexbox Fixed Bottom) */
+/* (Class names renamed with -bottom suffix to prevent conflicts) */
+/* ================================================= */
+
+.nav-container-bottom {
+  /* Renamed from .nav-container */
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+
+  /* Positioning for fixed bottom bar */
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50; /* Lower z-index than the top bar */
+  margin-bottom: 20px;
+}
+
+.nav-bar-bottom {
+  /* Renamed from .nav-bar */
+  display: flex;
+  flex-wrap: nowrap; 
+  justify-content: space-between;
+  gap: 8px;
+  overflow-x: auto; 
+}
+
+.nav-button-bottom {
+  /* Renamed from .nav-button */
+  flex-grow: 1; 
+  flex-shrink: 0;
+  min-width: 50px; 
+
+  padding:  10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+ 
+  background-color: white;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.nav-button-bottom:not(.active):hover {
+  background-color: #f0f0f0;
+}
+
+.nav-button-bottom.active {
+  background-color: #333;
+  color: white;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.check-icon-bottom {
+    /* New class for the check icon in the bottom bar */
+    margin-right: 5px;
+    font-size: 14px;
+}
