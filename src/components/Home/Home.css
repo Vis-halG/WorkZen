@@ -13,6 +13,7 @@
   height: 60%;
   background-color: white;
   padding: 20px;
+  overflow: hidden;
 }
 
 .bottom-section {
@@ -26,28 +27,68 @@
   position: absolute;
   border-radius: 50%;
   background-color: #cccccc;
-  opacity: 0.8;
-  transition: width 0.3s, height 0.3s;
+  opacity: 0.9;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floatMove 6s ease-in-out infinite alternate;
+  /* FIX: फ़ोकस आउटलाइन (लाइन) को हटाता है */
+  outline: none;
+}
+
+.circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
 
 .circle.small {
   width: 40px;
   height: 40px;
+  animation-delay: 0.2s;
 }
 
 .circle.medium {
   width: 70px;
   height: 70px;
+  animation-delay: 0.8s;
 }
 
 .circle.large {
   width: 100px;
   height: 100px;
+  animation-delay: 1.5s;
 }
 
 .circle.extra-large {
   width: 140px;
   height: 140px;
+  animation-delay: 2s;
+}
+
+@keyframes floatMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(10px, -15px);
+  }
+  50% {
+    transform: translate(-10px, 10px);
+  }
+  75% {
+    transform: translate(15px, 5px);
+  }
+  100% {
+    transform: translate(-10px, -10px);
+  }
+}
+
+.circle-placeholder {
+  font-size: 24px;
+  color: #555;
+  font-weight: 600;
 }
 
 .plus-icon-container {
@@ -147,4 +188,238 @@
 .toggle-btn.active {
   color: #000;
   font-weight: 600;
+}
+
+/* --- Modal Animation Changes --- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: overlayFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background-color: white;
+  border-radius: 15px;
+  padding: 25px;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: circleToModal 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes circleToModal {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+    border-radius: 50%;
+  }
+  50% {
+    transform: scale(0.6);
+    opacity: 0.8;
+    border-radius: 50%;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    border-radius: 15px;
+  }
+}
+
+.modal h2 {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+/* --- 1. Profile View Styles (For filled circles) --- */
+.profile-view-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-avatar-display {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #007bff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-profession {
+  font-size: 15px;
+  color: #555;
+  margin-top: -5px;
+  margin-bottom: 10px;
+}
+
+.profile-contact {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+/* --- Profile Action Buttons (Edit/Delete) --- */
+
+.modal-actions.profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  flex: 1;
+}
+
+.edit-btn {
+  background-color: #ffc107; /* Yellow for Edit */
+  color: #333;
+  font-weight: 500;
+}
+
+.edit-btn:hover {
+  background-color: #e0a800;
+}
+
+.delete-btn {
+  background-color: #dc3545; /* Red for Delete */
+  color: white;
+  font-weight: 500;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+/* Footer Close Button for Profile View */
+.close-btn-footer {
+  padding: 8px 20px;
+  background-color: #6c757d; /* Gray Close button */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.close-btn-footer:hover {
+  background-color: #5a6268;
+}
+
+
+/* --- 2. Form Styles (For empty circles/Add New/Edit) --- */
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-form input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+
+.avatar-picker {
+  margin-top: 10px;
+}
+
+.avatar-picker p {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.avatar-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.avatar-option {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+  object-fit: cover;
+}
+
+.avatar-option:hover {
+  transform: scale(1.1);
+}
+
+.avatar-option.selected {
+  border-color: #007bff;
+  box-shadow: 0 0 5px #007bff;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.save-btn,
+.cancel-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.save-btn {
+  background-color: #007bff;
+  color: white;
+  margin-right: 5px;
+}
+
+.cancel-btn {
+  background-color: #e0e0e0;
+}
+
+.save-btn:hover {
+  background-color: #005ecb;
+}
+
+.cancel-btn:hover {
+  background-color: #c9c9c9;
 }
