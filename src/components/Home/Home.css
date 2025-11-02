@@ -1,129 +1,150 @@
 .card-wrapper {
-    position: fixed;
-   width: calc(100vw - 10px - 15px - 10px); 
-    margin: 50px auto;  
-    height: calc(100vh - 0.5px - 135px - 10px); 
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 60px 16px 100px 16px;
+  background-color: white;
 }
+
 .top-section {
-    position: relative;
-    height: 60%; 
-    background-color: white;
-    padding: 20px;
+  position: relative;
+  height: 60%;
+  background-color: white;
+  padding: 20px;
 }
 
 .bottom-section {
-    position: relative; 
-    height: 35%;
-    background-color: #e0e0e0; /* Light gray background for the bottom section */
-    border-radius: 0 0 15px 15px; /* Matches card wrapper */
+  position: relative;
+  height: 39.5%;
+  background-color: #e0e0e0;
+  border-radius: 0 0 15px 15px;
 }
 
-/* --- Circles Styling --- */
 .circle {
-    position: absolute;
-    border-radius: 50%;
-    background-color: #cccccc; /* Light gray color as in the image */
-    opacity: 0.8; /* Slight transparency to make them look like mock elements */
-    /* Transition is optional, but adds a nice touch if sizes were to change */
-    transition: width 0.3s, height 0.3s;
+  position: absolute;
+  border-radius: 50%;
+  background-color: #cccccc;
+  opacity: 0.8;
+  transition: width 0.3s, height 0.3s;
 }
 
-/* Defining Circle Sizes */
 .circle.small {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 }
 
 .circle.medium {
-    width: 70px;
-    height: 70px;
+  width: 70px;
+  height: 70px;
 }
 
 .circle.large {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 .circle.extra-large {
-    width: 140px;
-    height: 140px;
+  width: 140px;
+  height: 140px;
 }
 
-/* --- Plus Icon Styling --- */
 .plus-icon-container {
-    position: absolute;
-    top: -25px; /* Adjust to position it slightly over the top section boundary */
-    left: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: white;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10; /* Ensure it is above the bottom-section background */
+  position: absolute;
+  top: -25px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
 
 .plus-icon {
-    position: relative;
-    width: 20px;
-    height: 20px;
+  position: relative;
+  width: 20px;
+  height: 20px;
 }
 
 .line {
-    position: absolute;
-    background-color: black; /* Color of the plus sign */
-    border-radius: 2px;
+  position: absolute;
+  background-color: black;
+  border-radius: 2px;
 }
 
 .line.horizontal {
-    width: 100%;
-    height: 4px;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
+  height: 4px;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
 }
 
 .line.vertical {
-    width: 4px;
-    height: 100%;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* --- Buttons Styling --- */
-.button-group {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
+.toggle-button-group {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  background-color: #d0d0d0;
+  border-radius: 30px;
+  padding: 5px;
+  gap: 0;
+  overflow: hidden;
+  width: 220px;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease;
 }
 
-.card-button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 20px; /* Pill shape */
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.toggle-bg {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: calc(50% - 5px);
+  height: calc(100% - 10px);
+  background-color: white;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  z-index: 0;
 }
 
-.card-button.primary {
-    /* Lighter gray button on the left */
-    background-color: #d0d0d0;
-    color: #333;
+.toggle-bg.Hiring {
+  transform: translateX(0);
 }
 
-.card-button.secondary {
-    /* Slightly darker gray button on the right */
-    background-color: #c0c0c0;
-    color: #333;
+.toggle-bg.Recruiting {
+  transform: translateX(100%);
+}
+
+.toggle-btn {
+  flex: 1;
+  z-index: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  border-radius: 25px;
+  height: 100%;
+  transition: color 0.3s ease;
+}
+
+.toggle-btn.active {
+  color: #000;
+  font-weight: 600;
 }
