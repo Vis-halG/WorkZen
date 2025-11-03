@@ -11,8 +11,8 @@ const topNavOptions = [
 
 const bottomNavItems = [
   { name: "Home" },
-  { name: "Favourite" },
-  { name: "Message" },
+  { name: "Teams" },
+  { name: "Chats" },
   { name: "Store" },
 ];
 
