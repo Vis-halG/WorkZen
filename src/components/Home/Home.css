@@ -34,7 +34,6 @@
   align-items: center;
   justify-content: center;
   animation: floatMove 6s ease-in-out infinite alternate;
-  /* FIX: फ़ोकस आउटलाइन (लाइन) को हटाता है */
   outline: none;
 }
 
@@ -71,15 +70,19 @@
   0% {
     transform: translate(0, 0);
   }
+
   25% {
     transform: translate(10px, -15px);
   }
+
   50% {
     transform: translate(-10px, 10px);
   }
+
   75% {
     transform: translate(15px, 5px);
   }
+
   100% {
     transform: translate(-10px, -10px);
   }
@@ -190,7 +193,6 @@
   font-weight: 600;
 }
 
-/* --- Modal Animation Changes --- */
 
 .modal-overlay {
   position: fixed;
@@ -207,8 +209,13 @@
 }
 
 @keyframes overlayFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modal {
@@ -226,11 +233,13 @@
     opacity: 0;
     border-radius: 50%;
   }
+
   50% {
     transform: scale(0.6);
     opacity: 0.8;
     border-radius: 50%;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -244,7 +253,6 @@
   margin-bottom: 15px;
 }
 
-/* --- 1. Profile View Styles (For filled circles) --- */
 .profile-view-content {
   display: flex;
   flex-direction: column;
@@ -275,8 +283,6 @@
   margin-bottom: 10px;
 }
 
-/* --- Profile Action Buttons (Edit/Delete) --- */
-
 .modal-actions.profile-actions {
   display: flex;
   justify-content: center;
@@ -298,7 +304,7 @@
 }
 
 .edit-btn {
-  background-color: #ffc107; /* Yellow for Edit */
+  background-color: #ffc107;
   color: #333;
   font-weight: 500;
 }
@@ -308,7 +314,7 @@
 }
 
 .delete-btn {
-  background-color: #dc3545; /* Red for Delete */
+  background-color: #dc3545;
   color: white;
   font-weight: 500;
 }
@@ -317,10 +323,9 @@
   background-color: #c82333;
 }
 
-/* Footer Close Button for Profile View */
 .close-btn-footer {
   padding: 8px 20px;
-  background-color: #6c757d; /* Gray Close button */
+  background-color: #6c757d;
   color: white;
   border: none;
   border-radius: 8px;
@@ -335,8 +340,6 @@
   background-color: #5a6268;
 }
 
-
-/* --- 2. Form Styles (For empty circles/Add New/Edit) --- */
 
 .modal-form {
   display: flex;

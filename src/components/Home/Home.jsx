@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./Home.css";
-// सुनिश्चित करें कि यह फ़ाइल मौजूद है और सही ढंग से इम्पोर्ट की गई है।
-import ModalContent from "./ModalContent"; 
+import ModalContent from "./ModalContent";
 
 const Home = () => {
   const circlesData = [
@@ -39,7 +38,7 @@ const Home = () => {
   const [activeRole, setActiveRole] = useState("Hiring");
   const [initialModalRect, setInitialModalRect] = useState(null);
   const [activeProfileData, setActiveProfileData] = useState(null);
-  
+
   const [isEditing, setIsEditing] = useState(false);
 
   const [profileFormData, setProfileFormData] = useState({
@@ -51,14 +50,12 @@ const Home = () => {
 
   const circleRefs = useRef([]);
 
-  // FIX: Focus Trapping Function
   const toggleCircleTabFocus = (disable) => {
-      circleRefs.current.forEach(circleEl => {
-          if (circleEl) {
-              // tabIndex = -1 (disables tabbing) or 0 (enables tabbing)
-              circleEl.tabIndex = disable ? -1 : 0; 
-          }
-      });
+    circleRefs.current.forEach(circleEl => {
+      if (circleEl) {
+        circleEl.tabIndex = disable ? -1 : 0;
+      }
+    });
   };
 
 
@@ -66,21 +63,19 @@ const Home = () => {
     setActiveCircleIndex(index);
     const data = circleData[index] || null;
     setActiveProfileData(data);
-    
-    // FIX: मॉडाल खुलने पर, Focus Trapping शुरू करें (सर्किल को non-tabbable बनाएं)
     toggleCircleTabFocus(true);
 
     if (data) {
-        setProfileFormData(data);
-        setIsEditing(false); 
+      setProfileFormData(data);
+      setIsEditing(false);
     } else {
-        setProfileFormData({
-            name: "",
-            profession: "",
-            contact: "",
-            avatar: avatars[0],
-        });
-        setIsEditing(true);
+      setProfileFormData({
+        name: "",
+        profession: "",
+        contact: "",
+        avatar: avatars[0],
+      });
+      setIsEditing(true);
     }
 
     const clickedCircle = circleRefs.current[index];
@@ -97,20 +92,20 @@ const Home = () => {
   };
 
   const closeModal = () => {
-    // FIX: मॉडाल बंद होने पर, Focus Trapping हटाएँ (सर्किल को वापस tabbable बनाएं)
+
     toggleCircleTabFocus(false);
-    
+
     setActiveCircleIndex(null);
     setInitialModalRect(null);
     setActiveProfileData(null);
     setIsEditing(false);
   };
-  
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setProfileFormData((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleEditClick = () => {
     setProfileFormData(activeProfileData);
     setIsEditing(true);
@@ -154,7 +149,7 @@ const Home = () => {
               }}
               onClick={() => handleCircleClick(index)}
               ref={(el) => (circleRefs.current[index] = el)}
-              tabIndex={0} // FIX: सुनिश्चित करें कि ये डिफ़ॉल्ट रूप से टैबेबल हैं
+              tabIndex={0}
             >
               {!data?.avatar && (
                 <span className="circle-placeholder">+</span>

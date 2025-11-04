@@ -53,9 +53,8 @@ const Navbar = () => {
           {bottomNavItems.map((item) => (
             <button
               key={item.name}
-              className={`nav-button-bottom ${
-                activeItem === item.name ? "active" : ""
-              }`}
+              className={`nav-button-bottom ${activeItem === item.name ? "active" : ""
+                }`}
               onClick={() => setActiveItem(item.name)}
             >
               {item.name}
