@@ -26,12 +26,9 @@ const Navbar = () => {
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
-  // Use a single search term for the active dropdown (state or city)
-  const [searchTerm, setSearchTerm] = useState(""); 
-
-  // State for the text user sees when nothing is selected/searched
+  const [searchTerm, setSearchTerm] = useState("");
   const [locationPlaceholder, setLocationPlaceholder] =
-    useState("Select State"); 
+    useState("Select State");
 
   const [showStateDropdown, setShowStateDropdown] = useState(false);
   const [showCityDropdown, setShowCityDropdown] = useState(false);
@@ -48,7 +45,6 @@ const Navbar = () => {
 
   const filteredStates = useMemo(() => {
     if (!searchTerm) return allStates;
-
     return allStates.filter((state) =>
       state.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -60,7 +56,6 @@ const Navbar = () => {
 
   const filteredCities = useMemo(() => {
     if (!searchTerm) return allCities;
-
     return allCities.filter((city) =>
       city.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -79,39 +74,33 @@ const Navbar = () => {
     }
   }, []);
 
+  // 🔥 FIX: NO RESET ON CLICK
   const handleLocationInputClick = () => {
     calculatePosition();
 
     if (!selectedState) {
-      // If no state is selected, open state dropdown
-      setLocationPlaceholder("Select State");
-      setSearchTerm(""); // Clear search term to show all states
       setShowStateDropdown(true);
       setShowCityDropdown(false);
     } else {
-      // If state is selected, open city dropdown
-      setLocationPlaceholder("Select City");
-      setSearchTerm(""); // Clear search term to show all cities
       setShowCityDropdown(true);
       setShowStateDropdown(false);
     }
   };
 
+  // 🔥 FIX: This does NOT reset fields anymore
   const handleLocationInputChange = (e) => {
     const term = e.target.value;
-    setSearchTerm(term); // **UPDATED:** Set the term user is typing
-    setSelectedCity(""); // **CRITICAL FIX:** Clear selected city so typing works
-    
+    setSearchTerm(term);
+
+    // Clear city ONLY when typing new search
+    if (selectedCity) setSelectedCity("");
+
     calculatePosition();
 
     if (!selectedState) {
-      // Searching for a State
-      setLocationPlaceholder("Select State");
       setShowStateDropdown(true);
       setShowCityDropdown(false);
     } else {
-      // Searching for a City
-      setLocationPlaceholder("Select City");
       setShowCityDropdown(true);
       setShowStateDropdown(false);
     }
@@ -122,32 +111,26 @@ const Navbar = () => {
     setSelectedCity("");
     setSearchTerm("");
     setShowStateDropdown(false);
+    setLocationPlaceholder(`Select City in ${stateName}`);
 
-    // Set placeholder to prompt for city
-    setLocationPlaceholder(`Select City in ${stateName}`); 
-    
     calculatePosition();
-    // Open City Dropdown shortly after
-    setTimeout(() => setShowCityDropdown(true), 100); 
+    setTimeout(() => setShowCityDropdown(true), 120);
   };
 
   const handleCitySelect = (cityName) => {
     setSelectedCity(cityName);
-    setSearchTerm(cityName); // Display selected city in input initially
+    setSearchTerm(cityName);
     setShowCityDropdown(false);
-    setLocationPlaceholder("Select City"); 
+    setLocationPlaceholder("Select City");
   };
-  
-  // Determine what text should actually appear in the input field
-  const inputText = selectedCity 
-    ? selectedCity 
-    : searchTerm;
 
-  // Determine what text is used for the mirror element (to calculate width)
-  const mirrorText = selectedCity 
-    ? selectedCity 
-    : (searchTerm || locationPlaceholder);
+  // Text shown inside input
+  const inputText = selectedCity ? selectedCity : searchTerm;
 
+  // Text used to calculate auto input width
+  const mirrorText = selectedCity
+    ? selectedCity
+    : searchTerm || locationPlaceholder;
 
   return (
     <>
@@ -158,12 +141,10 @@ const Navbar = () => {
           <div className="profile-circle-expandable"></div>
 
           <div className="filter-box">
-            
-            {/* AUTO-WIDTH ROLE INPUT */}
+
+            {/* ROLE INPUT - FIXED */}
             <div className="input-wrapper">
-              <span className="input-mirror">
-                {role || "Enter role"}
-              </span>
+              <span className="input-mirror">{role || "Enter role"}</span>
 
               <input
                 type="text"
@@ -174,14 +155,13 @@ const Navbar = () => {
                 placeholder="Enter role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
+                onClick={(e) => e.stopPropagation()} // FIX
               />
             </div>
 
-            {/* AUTO-WIDTH CITY/STATE INPUT */}
+            {/* CITY/STATE INPUT - FIXED */}
             <div className="input-wrapper" ref={cityRef}>
-              <span className="input-mirror">
-                {mirrorText} 
-              </span>
+              <span className="input-mirror">{mirrorText}</span>
 
               <input
                 type="text"
@@ -192,7 +172,7 @@ const Navbar = () => {
                 placeholder={locationPlaceholder}
                 value={inputText}
                 onChange={handleLocationInputChange}
-                onClick={handleLocationInputClick}
+                onClick={handleLocationInputClick} // FIX (does NOT reset)
               />
             </div>
 
@@ -237,7 +217,7 @@ const Navbar = () => {
               </li>
             ))
           ) : (
-            <li className="dropdown-item" style={{ cursor: "default", color: "#999" }}>
+            <li className="dropdown-item" style={{ color: "#999" }}>
               No states found
             </li>
           )}
@@ -266,7 +246,7 @@ const Navbar = () => {
               </li>
             ))
           ) : (
-            <li className="dropdown-item" style={{ cursor: "default", color: "#999" }}>
+            <li className="dropdown-item" style={{ color: "#999" }}>
               No cities found
             </li>
           )}
