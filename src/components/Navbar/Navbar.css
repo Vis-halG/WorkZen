@@ -1,7 +1,6 @@
 /* ===========================
    TOP SEARCH CONTAINER
 =========================== */
-
 .search-container {
   position: fixed;
   top: 0;
@@ -10,7 +9,10 @@
   z-index: 9999;
   padding: 0 16px 10px 16px;
   border-radius: 0 0 10px 10px;
-  transition: max-height 0.4s ease-in-out, background-color 0.4s ease-in-out, border-radius 0.4s ease-in-out;
+  transition: 
+    max-height 0.4s ease-in-out,
+    background-color 0.4s ease-in-out,
+    border-radius 0.4s ease-in-out;
   max-height: 60px;
   overflow: hidden;
   background-color: white;
@@ -26,7 +28,6 @@
 /* ===========================
    TOP BAR CONTENT
 =========================== */
-
 .top-bar-content {
   display: flex;
   align-items: center;
@@ -59,7 +60,12 @@
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition: height 0.02s ease-in-out, border-radius 0.2s ease-out 0.2s, opacity 0.2s ease-in-out, visibility 0s linear 0.2s, background-color 0.2s ease;
+  transition: 
+    height 0.02s ease-in-out,
+    border-radius 0.2s ease-out 0.2s,
+    opacity 0.2s ease-in-out,
+    visibility 0s linear 0.2s,
+    background-color 0.2s ease;
 }
 
 .search-container.expanded .profile-circle-expandable {
@@ -67,19 +73,23 @@
   height: calc(100vh - 20px);
   opacity: 1;
   visibility: visible;
-  transition: border-radius 0.01s, height 0.4s ease-in-out 0.01s, opacity 0.2s ease-in-out, visibility 0s linear, background-color 0.2s ease;
+  transition: 
+    border-radius 0.01s,
+    height 0.4s ease-in-out 0.01s,
+    opacity 0.2s ease-in-out,
+    visibility 0s linear,
+    background-color 0.2s ease;
 }
 
 /* ===========================
    FILTER BOX
 =========================== */
-
 .filter-box {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  justify-content: flex-start;    /* FIX → Align Role + City to the left */
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 1px;
   background-color: #e0e0e0;
   border-radius: 10px;
   height: 40px;
@@ -88,21 +98,45 @@
   box-sizing: border-box;
 }
 
+/* City wrapper flexes, role input does NOT */
+.city-wrapper {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: 0;
+}
+
 .filter-input {
-  width: 100%;
   border: none;
-  background-color: transparent;
+  background: transparent;
   outline: none;
-  font-size: 17px;
-  color: #000;
+  font-size: 16px;
+  font-family: system-ui, sans-serif;
+  padding: 4px 0;
+  width: auto;
+  min-width: 10px;
+}
+.input-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.input-mirror {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  font-size: 16px;
   font-family: system-ui, sans-serif;
 }
 
-.filter-input::placeholder {
-  color: #666;
-  font-weight: 400;
+.city-wrapper {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
 }
 
+
+/* Hamburger Icon */
 .menu-icon {
   background: none;
   border: none;
@@ -113,8 +147,10 @@
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  transition: background-color 0.25s ease, transform 0.2s ease;
-  margin-left: auto;   /* Important → Keeps menu icon on RIGHT */
+  transition: 
+    background-color 0.25s ease,
+    transform 0.2s ease;
+  margin-left: auto;
   z-index: 9999;
 }
 
@@ -125,59 +161,35 @@
 /* ===========================
    DROPDOWN (State + City)
 =========================== */
-
-/* .city-wrapper {
+.city-wrapper {
   display: flex;
   position: relative;
-  
   z-index: 9999;
 }
 
 .dropdown-list {
   position: absolute;
   top: 45px;
-  left: 0;
-  
+  right: 0;
   background-color: #ffffff;
   border: 1px solid #dcdcdc;
   border-radius: 10px;
   padding: 5px 0;
-  z-index: 9999;
+  z-index: 20000;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   max-height: 240px;
   overflow-y: auto;
   animation: dropdownFade 0.2s ease-out;
-} */
-
-/* ===========================
-   DROPDOWN (State + City)
-=========================== */
-
-.city-wrapper {
- display: flex;
- position: relative;
- left: 0;
- z-index: 9998;
 }
 
-.dropdown-list {
- background-color: #ffffff;
- border: 1px solid #dcdcdc;
- border-radius: 10px;
- padding: 5px 0;
- z-index: 20000; /* High z-index is maintained */
- box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
- max-height: 240px;
- overflow-y: auto;
-animation: dropdownFade 0.2s ease-out;
-}
-/* ... बाकी CSS अपरिवर्तित है ... */
 .dropdown-item {
   padding: 12px 15px;
   font-size: 16px;
   color: #333;
   cursor: pointer;
-  transition: background 0.25s ease, padding-left 0.2s ease;
+  transition: 
+    background 0.25s ease,
+    padding-left 0.2s ease;
 }
 
 .dropdown-item:hover {
@@ -206,9 +218,8 @@ animation: dropdownFade 0.2s ease-out;
 }
 
 /* ===========================
-   SIDE NAV OPTIONS (Menu Expanded)
+   SIDE NAV OPTIONS
 =========================== */
-
 .nav-options {
   margin-top: -7px;
   margin-left: 50px;
@@ -223,7 +234,9 @@ animation: dropdownFade 0.2s ease-out;
   pointer-events: none;
   overflow-y: auto;
   z-index: 9999;
-  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: 
+    opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .nav-options.open {
@@ -256,7 +269,6 @@ animation: dropdownFade 0.2s ease-out;
 /* ===========================
    BOTTOM NAV BAR
 =========================== */
-
 .nav-container-bottom {
   width: 100%;
   max-width: 900px;
@@ -305,7 +317,3 @@ animation: dropdownFade 0.2s ease-out;
   color: white;
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
-
-
-
-

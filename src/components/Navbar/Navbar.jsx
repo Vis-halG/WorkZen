@@ -26,16 +26,18 @@ const Navbar = () => {
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
-  // New State for State Search Term (used when selectedState is empty)
-  const [stateSearchTerm, setStateSearchTerm] = useState(""); 
-  const [citySearchTerm, setCitySearchTerm] = useState("");
+  // Use a single search term for the active dropdown (state or city)
+  const [searchTerm, setSearchTerm] = useState(""); 
 
-  const [cityInputPlaceholder, setCityInputPlaceholder] = useState("Select City");
+  // State for the text user sees when nothing is selected/searched
+  const [locationPlaceholder, setLocationPlaceholder] =
+    useState("Select State"); 
 
   const [showStateDropdown, setShowStateDropdown] = useState(false);
   const [showCityDropdown, setShowCityDropdown] = useState(false);
 
   const cityRef = useRef(null);
+
   const [dropdownPosition, setDropdownPosition] = useState({
     top: 0,
     left: 0,
@@ -43,40 +45,26 @@ const Navbar = () => {
   });
 
   const allStates = State.getStatesOfCountry("IN");
-  
-  // --- State Filtering Logic ---
+
   const filteredStates = useMemo(() => {
-    if (!stateSearchTerm) {
-      return allStates;
-    }
-    const lowerCaseSearchTerm = stateSearchTerm.toLowerCase();
-    return allStates.filter(state => 
-      state.name.toLowerCase().includes(lowerCaseSearchTerm)
+    if (!searchTerm) return allStates;
+
+    return allStates.filter((state) =>
+      state.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [allStates, stateSearchTerm]);
-  // -----------------------------
+  }, [allStates, searchTerm]);
 
-
-  // Memoize all cities of the selected state
   const allCities = useMemo(() => {
     return selectedState ? City.getCitiesOfState("IN", selectedState) : [];
   }, [selectedState]);
 
-  // Filter cities based on city search term
   const filteredCities = useMemo(() => {
-    const lowerCaseSearchTerm = citySearchTerm.toLowerCase();
-    
-    // If user has not typed anything, show all cities
-    if (!lowerCaseSearchTerm) {
-        return allCities;
-    }
+    if (!searchTerm) return allCities;
 
-    // Filter by search term
-    return allCities.filter(city => 
-      city.name.toLowerCase().includes(lowerCaseSearchTerm)
+    return allCities.filter((city) =>
+      city.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [allCities, citySearchTerm]);
-
+  }, [allCities, searchTerm]);
 
   const handleMenuClick = () => setMenuOpen((prev) => !prev);
 
@@ -91,103 +79,120 @@ const Navbar = () => {
     }
   }, []);
 
-  // Updated function to handle State/City input click and filtering logic
   const handleLocationInputClick = () => {
     calculatePosition();
 
     if (!selectedState) {
-      // Logic for State selection/filtering
-      setCityInputPlaceholder("First select state");
-      // Set the input value to the current state search term for display
-      setCitySearchTerm(stateSearchTerm); 
+      // If no state is selected, open state dropdown
+      setLocationPlaceholder("Select State");
+      setSearchTerm(""); // Clear search term to show all states
       setShowStateDropdown(true);
       setShowCityDropdown(false);
     } else {
-      // Logic for City selection/filtering
-      setCityInputPlaceholder("Select City");
-      // Set the input value to selected city or current search term
-      setCitySearchTerm(selectedCity || citySearchTerm); 
+      // If state is selected, open city dropdown
+      setLocationPlaceholder("Select City");
+      setSearchTerm(""); // Clear search term to show all cities
       setShowCityDropdown(true);
       setShowStateDropdown(false);
     }
   };
 
-  // New function to handle typing in the State/City input field
   const handleLocationInputChange = (e) => {
     const term = e.target.value;
+    setSearchTerm(term); // **UPDATED:** Set the term user is typing
+    setSelectedCity(""); // **CRITICAL FIX:** Clear selected city so typing works
+    
     calculatePosition();
 
     if (!selectedState) {
-      // User is typing to filter STATES
-      setStateSearchTerm(term);
-      setCitySearchTerm(term); // Keep City input value updated for display
-      
-      // Clear city states just in case
-      setSelectedCity("");
-
+      // Searching for a State
+      setLocationPlaceholder("Select State");
       setShowStateDropdown(true);
       setShowCityDropdown(false);
     } else {
-      // User is typing to filter CITIES
-      setCitySearchTerm(term);
-      setSelectedCity(""); // Clear selected city to show filtered list
-
+      // Searching for a City
+      setLocationPlaceholder("Select City");
       setShowCityDropdown(true);
       setShowStateDropdown(false);
     }
-  }
+  };
 
-
-  const handleStateSelect = (iso) => {
+  const handleStateSelect = (iso, stateName) => {
     setSelectedState(iso);
     setSelectedCity("");
-    setStateSearchTerm(""); // Clear state search term
-    setCitySearchTerm(""); // Clear city search term
-
+    setSearchTerm("");
     setShowStateDropdown(false);
 
-    // After state selection, reset placeholder and open city dropdown
-    setCityInputPlaceholder("Select City");
+    // Set placeholder to prompt for city
+    setLocationPlaceholder(`Select City in ${stateName}`); 
+    
     calculatePosition();
-    setTimeout(() => setShowCityDropdown(true), 100);
+    // Open City Dropdown shortly after
+    setTimeout(() => setShowCityDropdown(true), 100); 
   };
 
   const handleCitySelect = (cityName) => {
     setSelectedCity(cityName);
-    setCitySearchTerm(cityName); // Update search term to the selected name for display/re-opening
+    setSearchTerm(cityName); // Display selected city in input initially
     setShowCityDropdown(false);
+    setLocationPlaceholder("Select City"); 
   };
+  
+  // Determine what text should actually appear in the input field
+  const inputText = selectedCity 
+    ? selectedCity 
+    : searchTerm;
+
+  // Determine what text is used for the mirror element (to calculate width)
+  const mirrorText = selectedCity 
+    ? selectedCity 
+    : (searchTerm || locationPlaceholder);
+
 
   return (
     <>
-      {/* TOP SEARCH CONTAINER (Fixed at the top) */}
+      {/* TOP SEARCH CONTAINER */}
       <div className={`search-container ${menuOpen ? "expanded" : ""}`}>
         <div className="top-bar-content">
           <div className="icon-circle"></div>
-
           <div className="profile-circle-expandable"></div>
 
           <div className="filter-box">
-            <input
-              type="text"
-              className="filter-input"
-              placeholder="Enter role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            />
+            
+            {/* AUTO-WIDTH ROLE INPUT */}
+            <div className="input-wrapper">
+              <span className="input-mirror">
+                {role || "Enter role"}
+              </span>
 
-            <div className="city-wrapper">
               <input
                 type="text"
                 className="filter-input"
-                placeholder={cityInputPlaceholder}
-                // Input value will be the currently selected city OR the search term
-                value={selectedCity || citySearchTerm} 
-                // Handles typing for both State filtering (if no state selected) and City filtering
+                style={{
+                  width: `${(role || "Enter role").length + 1}ch`,
+                }}
+                placeholder="Enter role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              />
+            </div>
+
+            {/* AUTO-WIDTH CITY/STATE INPUT */}
+            <div className="input-wrapper" ref={cityRef}>
+              <span className="input-mirror">
+                {mirrorText} 
+              </span>
+
+              <input
+                type="text"
+                className="filter-input"
+                style={{
+                  width: `${mirrorText.length + 1}ch`,
+                }}
+                placeholder={locationPlaceholder}
+                value={inputText}
                 onChange={handleLocationInputChange}
-                // Handles click to open the correct dropdown
                 onClick={handleLocationInputClick}
-                ref={cityRef}
               />
             </div>
 
@@ -201,7 +206,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Expanded Menu Options */}
         {menuOpen && (
           <ul className="nav-options open">
             {topNavOptions.map((item) => (
@@ -211,7 +215,7 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* State dropdown - MOVED OUTSIDE search-container */}
+      {/* STATE DROPDOWN */}
       {showStateDropdown && !selectedState && (
         <ul
           className="dropdown-list"
@@ -223,24 +227,24 @@ const Navbar = () => {
           }}
         >
           {filteredStates.length > 0 ? (
-            filteredStates.map((item) => ( // Use filteredStates here
+            filteredStates.map((item) => (
               <li
                 key={item.isoCode}
                 className="dropdown-item"
-                onClick={() => handleStateSelect(item.isoCode)}
+                onClick={() => handleStateSelect(item.isoCode, item.name)}
               >
                 {item.name}
               </li>
             ))
           ) : (
-             <li className="dropdown-item" style={{ cursor: 'default', color: '#999' }}>
+            <li className="dropdown-item" style={{ cursor: "default", color: "#999" }}>
               No states found
             </li>
           )}
         </ul>
       )}
 
-      {/* City dropdown - MOVED OUTSIDE search-container */}
+      {/* CITY DROPDOWN */}
       {showCityDropdown && selectedState && (
         <ul
           className="dropdown-list"
@@ -262,14 +266,14 @@ const Navbar = () => {
               </li>
             ))
           ) : (
-            <li className="dropdown-item" style={{ cursor: 'default', color: '#999' }}>
+            <li className="dropdown-item" style={{ cursor: "default", color: "#999" }}>
               No cities found
             </li>
           )}
         </ul>
       )}
 
-      {/* Bottom Navigation */}
+      {/* BOTTOM NAV */}
       <div className="nav-container-bottom">
         <div className="nav-bar-bottom">
           {bottomNavItems.map((item) => (
