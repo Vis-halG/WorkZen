@@ -1,3 +1,7 @@
+/* ===========================
+   TOP SEARCH CONTAINER
+=========================== */
+
 .search-container {
   position: fixed;
   top: 0;
@@ -19,6 +23,10 @@
   border-radius: 0;
 }
 
+/* ===========================
+   TOP BAR CONTENT
+=========================== */
+
 .top-bar-content {
   display: flex;
   align-items: center;
@@ -37,9 +45,10 @@
   background-color: #e0e0e0;
   flex-shrink: 0;
   transition: background-color 0.4s ease;
-  z-index: 10000;
+  z-index: 9999;
 }
 
+/* Expandable background circle */
 .profile-circle-expandable {
   position: absolute;
   top: 10px;
@@ -47,7 +56,7 @@
   height: 40px;
   border-radius: 50%;
   background-color: #e0e0e0;
-  z-index: 10000;
+  z-index: 9999;
   opacity: 0;
   visibility: hidden;
   transition: height 0.02s ease-in-out, border-radius 0.2s ease-out 0.2s, opacity 0.2s ease-in-out, visibility 0s linear 0.2s, background-color 0.2s ease;
@@ -61,27 +70,37 @@
   transition: border-radius 0.01s, height 0.4s ease-in-out 0.01s, opacity 0.2s ease-in-out, visibility 0s linear, background-color 0.2s ease;
 }
 
-.search-box {
+/* ===========================
+   FILTER BOX
+=========================== */
+
+.filter-box {
   flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;    /* FIX → Align Role + City to the left */
+  gap: 10px;
   background-color: #e0e0e0;
   border-radius: 10px;
   height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 0 12px;
   margin-left: 10px;
   box-sizing: border-box;
 }
 
-.search-input {
+.filter-input {
+  width: 100%;
   border: none;
   background-color: transparent;
   outline: none;
-  font-size: 16px;
+  font-size: 17px;
   color: #000;
-  width: 100%;
   font-family: system-ui, sans-serif;
+}
+
+.filter-input::placeholder {
+  color: #666;
+  font-weight: 400;
 }
 
 .menu-icon {
@@ -95,8 +114,100 @@
   height: 40px;
   border-radius: 10px;
   transition: background-color 0.25s ease, transform 0.2s ease;
-  z-index: 10001;
+  margin-left: auto;   /* Important → Keeps menu icon on RIGHT */
+  z-index: 9999;
 }
+
+.menu-icon:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ===========================
+   DROPDOWN (State + City)
+=========================== */
+
+/* .city-wrapper {
+  display: flex;
+  position: relative;
+  
+  z-index: 9999;
+}
+
+.dropdown-list {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  padding: 5px 0;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  max-height: 240px;
+  overflow-y: auto;
+  animation: dropdownFade 0.2s ease-out;
+} */
+
+/* ===========================
+   DROPDOWN (State + City)
+=========================== */
+
+.city-wrapper {
+ display: flex;
+ position: relative;
+ left: 0;
+ z-index: 9998;
+}
+
+.dropdown-list {
+ background-color: #ffffff;
+ border: 1px solid #dcdcdc;
+ border-radius: 10px;
+ padding: 5px 0;
+ z-index: 20000; /* High z-index is maintained */
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+ max-height: 240px;
+ overflow-y: auto;
+animation: dropdownFade 0.2s ease-out;
+}
+/* ... बाकी CSS अपरिवर्तित है ... */
+.dropdown-item {
+  padding: 12px 15px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.25s ease, padding-left 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f3f3;
+  padding-left: 22px;
+}
+
+.state-label {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+  color: #333;
+  padding-left: 4px;
+  opacity: 0.8;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================
+   SIDE NAV OPTIONS (Menu Expanded)
+=========================== */
 
 .nav-options {
   margin-top: -7px;
@@ -107,11 +218,11 @@
   list-style: none;
   padding: 20px;
   height: calc(100vh - 42px - 40px);
-  opacity: 1;
+  opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
   overflow-y: auto;
-  z-index: 9998;
+  z-index: 9999;
   transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -142,6 +253,10 @@
   padding-left: 5px;
 }
 
+/* ===========================
+   BOTTOM NAV BAR
+=========================== */
+
 .nav-container-bottom {
   width: 100%;
   max-width: 900px;
@@ -152,14 +267,13 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 500;
+  z-index: 9998;
   box-sizing: border-box;
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .nav-bar-bottom {
   display: flex;
-  flex-wrap: nowrap;
   justify-content: space-between;
   gap: 8px;
   overflow-x: auto;
@@ -191,3 +305,7 @@
   color: white;
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
+
+
+
+
